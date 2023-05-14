@@ -33,6 +33,7 @@ async function run() {
     await client.connect();
 
     const collections = client.db('car_doctor').collection('car_doctor_collections')
+    const checkoutCollections = client.db('car_doctor').collection('checkout_collections')
     
 
     app.get('/services',async (req, res)=>{
@@ -49,6 +50,14 @@ async function run() {
       }
       const result = await collections.findOne(query, options)
       res.send(result)
+    })
+
+    app.post('/checkout', async(req,res)=>{
+      const body = req.body;
+      console.log(body)
+      const result = await checkoutCollections.insertOne(body)
+      res.send(result)
+      console.log(result)
     })
     
     await client.db("admin").command({ ping: 1 });
